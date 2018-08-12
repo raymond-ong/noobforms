@@ -1,0 +1,19 @@
+Noob Forms
+Phase 1:
+- Split Pane and main UI skeleton(done)
+- Redux skeleton
+- able to create section grid
+- able to select controls in the grid, 
+	- display the selected control's properties
+	- change the selected control's properties
+- able to resize the grid via prop pane
+- able to set controls via prop pane
+- able to set the size of controls via prop pane
+- able to move controls to empty area
+
+
+
+Phase 2:
+- able to drag controls to the designer area
+- able to resize controls via Drag and Drop
+- able to rearrange layout via Drag and Drop
