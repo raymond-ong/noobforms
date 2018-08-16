@@ -22,6 +22,10 @@ const reducer = (state = initialState, action) => {
         case 'SET_TEXT_CHANGE':
             newState[action.controlName] = action.controlValue;
             break;
+
+        case 'SELECT_CONTROL':
+            
+            break;
         default:
             break;
     }        

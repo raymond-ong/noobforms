@@ -34,7 +34,7 @@ const mapStateToProps = (state) => {
 // These will become the props of this component
 const mapDispatchToProps = (dispatch) => {
     return {
-        // this is undefined here because it is outside the scope of the class
+        // 'this' is undefined here because it is outside the scope of the class
         // so in order to access the props, we pass is as a parameter
         // Option B is to use mergeProps of redux
         onApplyClicked: (props) => {

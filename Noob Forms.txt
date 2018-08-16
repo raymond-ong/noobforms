@@ -3,6 +3,7 @@ Phase 1:
 - Split Pane and main UI skeleton(done)
 - Redux skeleton
 - able to create section grid
+=> TODO: Add names property for the controls and the section...later can be used to store into DB
 - able to select controls in the grid, 
 	- display the selected control's properties
 	- change the selected control's properties
@@ -17,3 +18,41 @@ Phase 2:
 - able to drag controls to the designer area
 - able to resize controls via Drag and Drop
 - able to rearrange layout via Drag and Drop
+
+
+{
+	sections:
+	[
+		{
+			name: 'section1',
+			title: 'Section A',
+			rows: 5,
+			columns: 3,
+			controls: 
+			[
+				{
+					name: 'control1',
+					type: 'textbox',
+					rowSpan: 1,
+					colSpan: 1,
+					label: 'First Name',
+					defaultValue: '', 
+					value: 'Hello',						
+				},
+				{
+					name: 'status1',
+					type: 'combobox',
+					rowSpan: 1,
+					colSpan: 1,
+					label: 'Job Status',
+					defaultValue: 'Draft',
+					items: [
+						'Draft',
+						'Ongoing',
+						'Completed'
+					]
+				}
+			]
+		}
+	]
+}

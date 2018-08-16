@@ -5,6 +5,8 @@ import NoobControl from './noobControl';
 class NoobSection extends Component {
     render() {
         // Create N dummy controls based on the number of rows and columns defined in the props
+        // TODO: Do not create the controls from scratch...check the state props first if the controls 
+        // have already been created previously. Otherwise, we will lose saved info
         let controls = [];
         let i =  0;
         for (let iCol = 0; iCol < this.props.numCols; iCol++) {
@@ -22,6 +24,10 @@ class NoobSection extends Component {
                 <div className="noobSectionTitle">{this.props.title}</div>
                 <div className="noobSection" style={divStyle}>{controls}</div>
                 </div>;
+    }
+
+    componentDidMount() {
+        // fire event that the control has been initialized...but who is the parent???    
     }
 }
 

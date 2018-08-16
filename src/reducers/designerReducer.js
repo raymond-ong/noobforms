@@ -1,7 +1,11 @@
+// How does the designer pane get these initial state??
+// => declared in the rootReducer's combineReducer
+// In the mapStateToProps of the Designer Pane, it is setting the local props from state.designer.xxx
 const defaultSection = {
-    title: 'Section 1',
+    title: 'Section A',
     layoutRows: 5,
     layoutColumns: 3,
+    controls: []
     //TODO childSections: []
 }
 

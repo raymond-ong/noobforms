@@ -136,15 +136,30 @@ body {
   margin-top: 20px;
   display:block;
   font-size: 1.2em;
-  background-color: darkseagreen;
-  padding: 6px;
+  /* background-color: darkseagreen; */
+  background-color: #28a745;
+  padding: .375rem .75rem;
+  user-select: none;user-select: none;
   float: right;
   margin-right: 10px;
-  color: #fffafa;
-  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 400;
+  border-radius: .25rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  /* copied from bootstrap */
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; 
+  outline: 0;
   /*  */
 }
 
+.formButton:hover {
+  background-color: #218838;
+}
+
+.formButton:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40,167,69,.5);
+}
 
 #main {
   display: grid;

@@ -1,7 +1,7 @@
 const initialState = {
     colspan: 1,
     rowspan: 1,
-    controlType: 'text'
+    controlType: 'none',    
 }
 
 

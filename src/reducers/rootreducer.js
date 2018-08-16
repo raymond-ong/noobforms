@@ -25,10 +25,12 @@ export default reducer;
 import { combineReducers } from 'redux'
 import designer from './designerReducer' // Note: this naming affects the property of the state inside the container's mapToXXX
 import controlProps from './controlPropsReducer';
+import noobControl from './noobControlReducer';
 
 const noobApp = combineReducers({
     designer, 
-    controlProps
+    controlProps,
+    noobControl
 })
 
 export default noobApp
