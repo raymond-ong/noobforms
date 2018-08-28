@@ -25,12 +25,14 @@ export default reducer;
 import { combineReducers } from 'redux'
 import designer from './designerReducer' // Note: this naming affects the property of the state inside the container's mapToXXX
 import controlProps from './controlPropsReducer';
-import noobControl from './noobControlReducer';
+//import appSplitPane from './appReducer';
+//import noobControl from './noobControlReducer';
 
-const noobApp = combineReducers({
-    designer, 
+const noobApp = combineReducers({    
     controlProps,
-    noobControl
+    designer, 
+    //appSplitPane
+    //noobControl
 })
 
 export default noobApp

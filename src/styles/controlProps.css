@@ -1,0 +1,6 @@
+/* These settings put a scrollbar into the SplitPane's child component when the component is resized */
+.controlPropsPane {
+     overflow: auto;
+     /* width: 100%; */
+}
+

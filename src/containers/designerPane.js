@@ -14,6 +14,8 @@ class DesignerPane extends Component {
             sects.push(<NoobSection key={'sect'+i++} 
                         numRows={sect.layoutRows} 
                         numCols={sect.layoutColumns}
+                        controls={sect.controls}
+                        sectId={sect.sectId}
                         title={sect.title}></NoobSection>)
         });
                     
@@ -33,9 +35,9 @@ const mapStateToProps = (state) => {
 // These will become the props of this component
 const mapDispatchToProps = (dispatch) => {
     return {
-      onApplyClicked: () => {
-          dispatch({type: 'APPLY_PROPS'})
-      }
+    //   onApplyClicked: () => {
+    //       dispatch({type: 'APPLY_PROPS'})
+    //   }
     }
   };
   

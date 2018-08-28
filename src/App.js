@@ -5,7 +5,10 @@ import SplitPane from "react-split-pane";
 import Navbar from "./components/navbar";
 import ControlPropsPane from "./containers/controlPropsPane";
 import DesignerPane from './containers/designerPane';
-
+import Toolbox from './components/toolbox';
+import * as constants from './constants';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends Component {
   render() {
@@ -14,8 +17,9 @@ class App extends Component {
         <Navbar/>
         <div className = "mainSplit">          
           <SplitPane className= "theSplit" split="vertical" minSize={200} defaultSize={300}>
-              <SplitPane split="horizontal" minSize={200} defaultSize={300}>              
-                <div>Controls Toolbox</div>
+              <SplitPane 
+                    className="sideSplit" split="horizontal" minSize={constants.defaultToolboxHeight} defaultSize={constants.defaultToolboxHeight}>
+                <Toolbox>Controls Toolbox</Toolbox>
                 <ControlPropsPane/>
               </SplitPane>    
               <DesignerPane/>
@@ -30,4 +34,5 @@ class App extends Component {
   }
 }
 
-export default App;
+//export default App;
+export default DragDropContext(HTML5Backend)(App);

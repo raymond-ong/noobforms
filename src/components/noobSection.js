@@ -7,6 +7,7 @@ class NoobSection extends Component {
         // Create N dummy controls based on the number of rows and columns defined in the props
         // TODO: Do not create the controls from scratch...check the state props first if the controls 
         // have already been created previously. Otherwise, we will lose saved info
+        /*
         let controls = [];
         let i =  0;
         for (let iCol = 0; iCol < this.props.numCols; iCol++) {
@@ -15,6 +16,23 @@ class NoobSection extends Component {
                 controls.push(<NoobControl key={'ctrl' + i++}/>);
             }
         }
+        */
+        // debugger
+        // Create controls from the props
+        //let i = 0;
+        let controls = this.props.controls.map((ctrl, i=0) => {
+            return <NoobControl 
+                type={ctrl.type}
+                selected={ctrl.selected}
+                key={'ctrl' + i++} // for internal use by React
+                sectId={this.props.sectId}
+                keyId = {ctrl.keyId}
+                rowSpan = {ctrl.rowSpan}
+                colSpan = {ctrl.colSpan}
+                name = {ctrl.name}
+                label = {ctrl.label}                
+                />;
+        })
 
         //repeat(100, 1fr);
         

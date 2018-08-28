@@ -18,6 +18,11 @@
   position: relative !important; /* originally 'absolute' - Prob: bigger than the parent */
 }
 
+.Pane .horizontal .Pane2 {
+  display: flex; /* Added by raymond: to show scrollbar on the bottom pane also */
+  overflow-x: hidden; /*Added by raymond: to avoid showing the horizontal scrollbar*/
+}
+
 .Resizer {
   background: #058805;
   opacity: .2;
@@ -115,7 +120,11 @@ body {
 
 /* Forms */
 #controlProps {
-  margin: 10px;
+  padding: 10px;
+  /* height: calc(100vh); 
+  overflow-y:auto; */
+  /* overflow: auto;
+  width: 100%;   */
 }
 
 .formLabel {
@@ -175,3 +184,7 @@ body {
   grid-template-rows: auto; */
   height: calc(100vh - 75px);
 }
+
+/* .sideSplit {
+  height: calc(100vh); 
+} */

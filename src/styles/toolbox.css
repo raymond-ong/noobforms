@@ -1,0 +1,25 @@
+.toolboxContainer {
+     padding: 10px;
+     /* height: 100% */     
+     overflow: auto;
+     width: 100%;
+}
+
+.toolBox {
+     display: grid;
+     grid-template-columns: 1fr 1fr 1fr;
+     grid-template-rows: auto;
+     width: 100%;
+}
+
+.toolItem {
+     background-color: #99ddaa;
+     margin: 5px;
+     border-radius: 0.5rem;
+     text-align: center;
+     cursor: pointer;
+     user-select: none;
+     font-size: 0.8rem;
+     font-weight: 500;
+     padding: 3px;
+}
