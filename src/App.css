@@ -112,10 +112,14 @@ body {
   display: inline;
 }
 
+.nav-list li a:hover{
+  border-bottom: 2px solid white;
+}
+
 .nav-list li a{
   text-decoration: none;
   padding: 10px;
-  color: #fffafa;
+  color: #fffafa;  
 }
 
 /* Forms */

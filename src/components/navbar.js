@@ -6,8 +6,8 @@ class Navbar extends Component {
         return <div className="navbar">
             <div className="nav-logo">Noob Forms</div>
             <ul className="nav-list">
-                <li><a href="#Designer">Designer</a></li>
-                <li><a href="#Data">Data List</a></li>
+                <li><a href="#Designer">DESIGNER</a></li>
+                <li><a href="#Data">DATA LIST</a></li>
             </ul>
         </div>;
     }

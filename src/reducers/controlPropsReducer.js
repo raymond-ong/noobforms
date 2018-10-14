@@ -24,6 +24,7 @@ const reducer = (state = initialState, action) => {
             // Do some Validation?
             // Just ask the desginer to update itself
             // Or just let the designer to listen to this event
+            //debugger
             break;
         case 'SET_CONTROL_NUMTEXT_CHANGE':
             // allow empty string or any valid number
@@ -45,12 +46,12 @@ const reducer = (state = initialState, action) => {
             // Repopulate the control proprties pane based on what was selected
             //debugger
             newState.selectedType = constants.TYPE_CONTROL;
-            newState.selectedControl = action.selectedControl;
-            newState.controlStates.rowSpan = action.selectedControl.props.rowSpan;
-            newState.controlStates.colSpan = action.selectedControl.props.colSpan;
-            newState.controlStates.name = action.selectedControl.props.name;
-            newState.controlStates.label = action.selectedControl.props.label;
-            newState.controlStates.type = action.selectedControl.props.type;
+            newState.selectedControl = action.control;
+            newState.controlStates.rowSpan = action.control.rowSpan;
+            newState.controlStates.colSpan = action.control.colSpan;
+            newState.controlStates.name = action.control.name;
+            newState.controlStates.label = action.control.label;
+            newState.controlStates.type = action.control.type;
             break;
         default:
             break;

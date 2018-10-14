@@ -57,6 +57,16 @@ const toolBoxItems = [
           displayName: 'User',
           logo: ''
      },
+     {
+        name: 'Image',
+        displayName: 'Image',
+        logo: ''
+    },
+    {
+        name: 'Video',
+        displayName: 'Video',
+        logo: ''
+    },
 ];
 
 
@@ -69,9 +79,9 @@ class Toolbox extends Component {
                 </div>
     }
 
-    populateToolbox() {
+    populateToolbox() {        
           let tools = toolBoxItems.map( x => {
-               return <ToolItem controlType={x}/>
+               return <ToolItem controlType={x} key={x.name}/>
           })
 
           //debugger

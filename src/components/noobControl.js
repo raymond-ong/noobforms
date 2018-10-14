@@ -3,84 +3,57 @@ import '../styles/noobControl.css';
 import {connect} from 'react-redux';
 import { DropTarget } from 'react-dnd';
 
-class NoobControl extends Component {
-    render() {
-        let ctrlClass = 'noobControl';
-        if (this.props.selected === true) {
-            ctrlClass += ' selectedControl';
-        }
-        //debugger
-        let ctrlStyle = {};
-        
-        ctrlStyle['height'] = 20 * this.props.rowSpan + 15 * (this.props.rowSpan - 1);
-        ctrlStyle['gridRowEnd'] = 'span ' + this.props.rowSpan;
-        ctrlStyle['gridColumnEnd'] = 'span ' + this.props.colSpan;
-        if (this.props.hovered) {
-            ctrlStyle['backgroundColor'] = 'coral';
-        }
-        //console.log('Noob Control render() for ' + this.props.keyId);
-
-        const {connectDropTarget, hovered, control} = this.props;
-
-        return connectDropTarget(
-            <div className={ctrlClass}
-                style={ctrlStyle} 
-                onClick={ () => this.props.OnControlSelected(this)}>{this.props.keyId} / {this.props.type}
-            </div>);
+const NoobControl = ({type, 
+                    selected, 
+                    sectId,
+                    rowSpan,
+                    colSpan,
+                    name,
+                    label,
+                    controlId,
+                    onSelectControl,
+                    onResizerMouseDown,
+                    resizeEvents, // not null if this control is currently being dragged to resize
+                }) => {
+    let ctrlClass = 'noobControl';
+    if (selected === true) {
+        ctrlClass += ' selectedControl';
     }
-}
 
-// These will become the props of this component
-const mapStateToProps = (state) => {
-    //debugger
-    return {
-        // layoutTitle: state.controlProps.layoutTitle
-        // type: state.NoobControl,
-        // selected: state.selected
-        // key: state.props.key        
-    }
-}
-
-// These will become the props of this component
-const mapDispatchToProps = (dispatch) => {
-    return {
-        // 'this' is undefined here because it is outside the scope of the class
-        // so in order to access the props, we pass it as a parameter
-        // Option B is to use mergeProps of redux
-        OnControlSelected: (selControl) => {
-            //debugger
-            dispatch({
-                type: 'SELECT_CONTROL',
-                selectedControl: selControl,
-            })
-        },
-        OnControlTypeSelected: (controlType, selControl) => {
-            console.log('OnControlTypeSelected');
-            dispatch({
-                type: 'SET_CONTROL_TYPE',
-                selectedControl: selControl,
-                controlType
-            })
-        }
+    let ctrlStyle = {
+        // set the minHeight instead of height. Height will make the height fixed regardless of the content.
+        // minHeight allows the parent container to grow depending on content
+        'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
+        //'position': 'relative',
+        'gridRowEnd': 'span ' + rowSpan,
+        'gridColumnEnd': 'span ' + colSpan,
     };
-  };
 
-const controlDropTarget = {
-    drop(props, monitor, control) {
-        console.log('dropped!!!');
-        let controlType = monitor.getItem();
-        props.OnControlTypeSelected(controlType, control);
+    let contentStyle = {
+        // 'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
     }
+
+    if (resizeEvents !== null) {
+        console.log('[DEBUG][NoobControl][render]' + controlId + ' [Resizing] ' + resizeEvents.mouseMoveEvent.clientX);
+        debugger
+    }
+    
+
+    return (
+    <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} 
+        id={"ctrl"+controlId} >
+        <div className="myContent" id={"ctrlContent" + controlId}>
+            ({controlId} / {type}) {label}
+        </div>
+
+        <div className="resizer" id={"ctrlResizer" + controlId}
+            onMouseDown={(e) => {                
+                onResizerMouseDown(e);
+            }
+        }
+        ></div>
+    </div>);
 }
 
-function collect(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget(),
-        hovered: monitor.isOver(),
-        control: monitor.getItem()
-    }
-}
 
-NoobControl = DropTarget('control', controlDropTarget, collect)(NoobControl);
-export default connect(mapStateToProps, mapDispatchToProps)(NoobControl);
-//export default DropTarget('control', itemSource, collect)(NoobControl);
+export default NoobControl;

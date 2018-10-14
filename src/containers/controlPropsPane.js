@@ -104,6 +104,7 @@ const mapDispatchToProps = (dispatch) => {
             
             dispatch({
                 type: 'APPLY_PROPS',
+                controlId: props.selectedControl.controlId,
                 controlRowSpan: props.controlRowSpan,
                 controlColSpan: props.controlColSpan,
                 controlLabel: props.controlLabel,

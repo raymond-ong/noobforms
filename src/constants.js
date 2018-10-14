@@ -4,7 +4,7 @@ export const defaultToolboxHeight = 180;
 
 // Section
 export const defaultNumRows = 5;
-export const defaultNumColumns = 6;
+export const defaultNumColumns = 5;
 export const defaultSectionName = 'Section X';
 
 // Control types

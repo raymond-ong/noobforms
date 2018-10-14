@@ -1,10 +1,63 @@
 .noobControl {
     background-color: #d6e8f5;
-    padding: 5px;
+    padding: 10px;
     /* min-height: 20px; */
-    border-radius: .25rem;
+    /* To prevent user from highlighting the text */
+    user-select: none;
+    /* border-radius: .25rem; */
+    /* needed to position the resizer */
+    position: relative;
+    /* z-index: 100; */
 }
 
 .selectedControl {
     background-color: #ffccaa;
+}
+
+.resizingControl {
+    background-color: #ff7777;
+    position: relative;
+}
+
+.resizingContent {
+    background-color: #aa33cc;
+    opacity: 0.5;
+    z-index: 10000;
+    position: absolute;
+    left: 10;
+    right: 10;
+    top: 10;
+    bottom: 10;
+}
+
+.myContent {
+    border: 1px solid blue;
+    padding: 10px;
+    z-index: 101;    
+    text-align: center;
+
+    /* position: relative; */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.resizer {
+    position: absolute;
+    user-select: auto;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 3px;
+    cursor: move;
+    width: 10px;
+    height: 10px;
+    /* border: 5px solid black; */
+    border-right: 3px solid rgba(0,0,0,0.4);
+    border-bottom: 3px solid rgba(0,0,0,0.4);
+    cursor: se-resize;
+    bottom: 0;
+    right: 0;
+    z-index: 102;
 }

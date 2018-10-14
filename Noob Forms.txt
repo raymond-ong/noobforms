@@ -13,6 +13,9 @@ Phase 1:
 - able to move controls to empty area
 
 
+REMINDER:
+=> Uninstall unused packages like bokuweb-resize
+
 
 Phase 2:
 - able to drag controls to the designer area
@@ -56,3 +59,12 @@ Phase 2:
 		}
 	]
 }
+
+
+Refactor:
+- Make lower level components like NoobSection, NoobControl dumb components:
+	-> The callback handlers to the events inside it are just props.
+		The actual functionalities are handled by higher level components
+		
+- Prob: What if there multiple level of dumb components?
+	
