@@ -2,7 +2,7 @@ import React from 'react'
 import NoobSection from './noobSection';
 
 const NoobSectionList = ({sections, resizingControlId,
-                        onSelectControl, onResizerMouseDown, onSectionMouseUp, onSectionMouseMove}) => (
+                        onSelectControl, onResizerMouseDown, onSectionMouseUp}) => (
     <div>
         {sections.map(section => 
             <NoobSection
@@ -12,7 +12,6 @@ const NoobSectionList = ({sections, resizingControlId,
                 onSelectControl = {onSelectControl}
                 onResizerMouseDown = {onResizerMouseDown}
                 onSectionMouseUp = {onSectionMouseUp}
-                onSectionMouseMove = {onSectionMouseMove}
             />) 
         }
     </div>

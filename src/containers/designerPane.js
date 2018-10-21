@@ -34,14 +34,17 @@ const mapDispatchToProps = (dispatch) => {
             
         },
 
-        onSectionMouseUp: (sectId, e) => {
+        onSectionMouseUp: (sectId, e, newSize) => {
             console.log('[DEBUG][SECTIONMOUSEUP] sectid:' + sectId);
             dispatch({
                 type: 'SECTION_MOUSE_UP',
-                sectId
+                sectId,
+                newSize
             });
         },
 
+        /* No need to track the mouse movement here, since the mouse movement will not 
+            cause a permanent state change
         onSectionMouseMove: (sectId, e) => {
             // Ideally: dispatch only if there is control that is resizing
             // console.log('[DEBUG][SECTIONMOUSE MOVE] sectid:' + sectId);
@@ -52,6 +55,7 @@ const mapDispatchToProps = (dispatch) => {
             });
 
         }
+        */
     }
   };
   

@@ -8,8 +8,8 @@ let letSectionId = 0;
 
 const createDefaultControls = (sectIdIn) => {
     let ret = [];
-    for (let iCol = 0; iCol < constants.defaultNumColumns; iCol++) {
-        for (let iRow = 0; iRow < constants.defaultNumRows; iRow++) {
+    for (let iRow = 0; iRow < constants.defaultNumRows; iRow++) {
+        for (let iCol = 0; iCol < constants.defaultNumColumns; iCol++) {
             ret.push({
                 type: 'none',
                 selected: false,
@@ -19,7 +19,8 @@ const createDefaultControls = (sectIdIn) => {
                 name: '', // put an empty string instead of null...textbox control does not bind properly if null
                 label: '',
                 controlId: lastControlId++,
-                resizeEvents: null
+                x: iCol,
+                y: iRow
             });
         }
     }
@@ -75,15 +76,50 @@ function findControlById(state, inputControlId) {
     return retObj;
 }
 
-function clearControlResizeEvents(state) {
-    state.sections.forEach(section => {
-        let controls = section.controls;
-        controls.forEach(control => {
-            if (control.resizeEvents !== null) {
-                control.resizeEvents = null;
-            }
-        })
+function getSection(sectId, state) {
+    if (!state || !state.sections) {
+        return null;
+    }
+
+    return state.sections.find(section => {
+        return section.sectId === sectId
     })
+}
+
+// x,y: coordinate of control resized
+// rowSpan, colSpan: new size of the  control
+// Omit controls that are covered by the resized control
+function getNewControls(section, updatedControl) {
+    let affectedXStart = updatedControl.x;
+    let affectedXEnd = updatedControl.x + updatedControl.colSpan - 1;
+    let affectedYStart = updatedControl.y;
+    let affectedYEnd = updatedControl.y + updatedControl.rowSpan - 1;
+
+    let retList = [];
+    section.controls.forEach(control => {
+        if (control.x < affectedXStart || control.x > affectedXEnd ||
+            control.y < affectedYStart || control.y > affectedYEnd || 
+            control.controlId === updatedControl.controlId) {
+                retList.push(control);
+            }        
+    })
+
+    // TODO Create new controls as necessary -- if size was reduced or reshaped
+
+    return retList;
+}
+
+function reconstructXyAftResize(state, updatedControl, newSize) {
+    if (!state || !state.sections || !updatedControl || updatedControl.sectId === null) {
+        return null;
+    }
+
+    let sectionUpdated = getSection(updatedControl.sectId, state);
+    if (!sectionUpdated || !sectionUpdated.controls) {
+        return;
+    }
+
+    sectionUpdated.controls = getNewControls(sectionUpdated, updatedControl);
 }
 
 const reducer = (state = initialState, action) => {
@@ -102,6 +138,8 @@ const reducer = (state = initialState, action) => {
             selectedControl.label = action.controlLabel;
             selectedControl.name = action.controlName;
             selectedControl.type = action.controlType;
+
+            // TODO: re-calculate the X and Y positions
         }
         else {
         }
@@ -143,29 +181,24 @@ const reducer = (state = initialState, action) => {
         // Maybe we can only re-render affected controls if we update only the affected controls here...
         // So maybe track resizingControl/resizingEvennt inside each control
         newState.resizingControlId = action.control.controlId;
-        newState.sections = [...state.sections]; // force the section to re-render, so that he will know how to handle mouse move
+        //newState.sections = [...state.sections]; // force the section to re-render, so that he will know how to handle mouse move
         break;
     
-    case 'SECTION_MOUSE_UP':    
-        // clear the resizeEvents property of all controls
-        newState.sections = [...state.sections];
-        clearControlResizeEvents(newState);
-        newState.resizingControlId = null;
-        break;
-    case 'SECTION_MOUSE_MOVE':
-        if (newState.resizingControlId === null) {
-            return state; // return old state since there is no control resizing
-        }
-
-        console.log('[DEBUG][DESIGNER REDUCER][SECTION_MOUSE_MOVE]' + action.mouseMoveEvent.clientX);
-
+    case 'SECTION_MOUSE_UP':        
         let resizingControl = findControlById(newState, newState.resizingControlId);
-        if (resizingControl !== null) {
+        newState.resizingControlId = null;        
+        if (action.newSize) {
+            console.log(`[DEBUG][SECTION_MOUSE_UP][New Size: ${action.newSize.newRows} ${action.newSize.newCols}] `);
             newState.sections = [...state.sections];
-            resizingControl.resizeEvents = {
-                //mouseMoveEvent: action.mouseMoveEvent -- this object would have been disposed when the control receives this
-                mouseMoveEvent: {...action.mouseMoveEvent} // workaround to avoid this object from being disposed when the control receives this
-            };
+            if (resizingControl === null) {
+                break;
+            }
+
+            resizingControl.rowSpan = action.newSize.newRows;
+            resizingControl.colSpan = action.newSize.newCols;
+
+            // TODO: re-calculate the X and Y positions
+            reconstructXyAftResize(state, resizingControl, action.newSize);
         }
         break;
     case 'RESIZING_STOP':

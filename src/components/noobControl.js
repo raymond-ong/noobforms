@@ -13,7 +13,8 @@ const NoobControl = ({type,
                     controlId,
                     onSelectControl,
                     onResizerMouseDown,
-                    resizeEvents, // not null if this control is currently being dragged to resize
+                    x,
+                    y
                 }) => {
     let ctrlClass = 'noobControl';
     if (selected === true) {
@@ -33,14 +34,18 @@ const NoobControl = ({type,
         // 'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
     }
 
-    if (resizeEvents !== null) {
-        console.log('[DEBUG][NoobControl][render]' + controlId + ' [Resizing] ' + resizeEvents.mouseMoveEvent.clientX);
-        debugger
+    //console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
+
+    // access these in Javascript by x.dataset.layoutx (Note: lowercase)
+    let layoutPos = {
+        'data-layoutx': x,
+        'data-layouty': y,
+        'data-rowspan': rowSpan,
+        'data-colspan': colSpan,
     }
-    
 
     return (
-    <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} 
+    <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} {...layoutPos}
         id={"ctrl"+controlId} >
         <div className="myContent" id={"ctrlContent" + controlId}>
             ({controlId} / {type}) {label}
@@ -52,6 +57,9 @@ const NoobControl = ({type,
             }
         }
         ></div>
+
+        <div className="landingPad">
+        </div>
     </div>);
 }
 

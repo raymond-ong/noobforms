@@ -30,6 +30,10 @@
     bottom: 10;
 }
 
+.potentialResizeDrop {
+    background-color: #ccff33;
+}
+
 .myContent {
     border: 1px solid blue;
     padding: 10px;
@@ -60,4 +64,19 @@
     bottom: 0;
     right: 0;
     z-index: 102;
+}
+
+
+.landingPad {
+    display: grid;
+    background: #bbbb00;
+    opacity: 0.5;
+    z-index: 50;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
