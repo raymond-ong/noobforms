@@ -61,19 +61,19 @@ const NoobControl = ({type,
         ></div>
 
         <div className="landingPadContainer" style={landingPadStyle}>
-            {createLandingPads(rowSpan, colSpan, domCtrlId)}
+            {createLandingPads(rowSpan, colSpan, domCtrlId, x, y)}
         </div>
     </div>);
 }
 
 // Create a landing pad to allow the user to reduce the size of the control
-function createLandingPads(rowSpan, colSpan, domParentCtrlId) {
+function createLandingPads(rowSpan, colSpan, domParentCtrlId, parentX, parentY) {
     let retList = [];
     for (let i=0; i < rowSpan; i++) {
         for (let j=0; j < colSpan; j++) {
             let layoutPos = {
-                'data-layoutx': j,
-                'data-layouty': i,
+                'data-layoutx': j + parentX,
+                'data-layouty': i + parentY,
             }
             retList.push(<div className="landingPadCell" 
                             parentctrlid={domParentCtrlId} 

@@ -139,7 +139,7 @@ function populateXyMap(xyMap, control, section) {
     let yStart = control.y;
     let yEnd = control.y + control.rowSpan;
 
-    console.log(`[DEBUG][populateXyMap][start] ${control.controlId}`);
+    //console.log(`[DEBUG][populateXyMap][start] ${control.controlId}`);
     for (let iRow = yStart; iRow < yEnd; iRow++) {
         for (let iCol = xStart; iCol < xEnd; iCol++) {
             let index = iRow * section.layoutColumns + iCol;
@@ -147,7 +147,7 @@ function populateXyMap(xyMap, control, section) {
             // 2: if this index is within the scope of the control's additional span
             // undefined: gap
             xyMap[index] = iRow === yStart && iCol === xStart ? 1 : 2; 
-            console.log(`[DEBUG][populateXyMap] ${index}`);
+            //console.log(`[DEBUG][populateXyMap] ${index}`);
         }
     }
 }
