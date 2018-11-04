@@ -25,14 +25,9 @@ const NoobControl = ({type,
         // set the minHeight instead of height. Height will make the height fixed regardless of the content.
         // minHeight allows the parent container to grow depending on content
         'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
-        //'position': 'relative',
         'gridRowEnd': 'span ' + rowSpan,
         'gridColumnEnd': 'span ' + colSpan,
     };
-
-    let contentStyle = {
-        // 'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
-    }
 
     //console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
 
@@ -44,9 +39,16 @@ const NoobControl = ({type,
         'data-colspan': colSpan,
     }
 
+    let landingPadStyle = {
+        gridTemplateColumns: `repeat(${colSpan}, 1fr)`,
+        gridTemplateRows: `repeat(${rowSpan}, 1fr)`,
+    }
+
+    let domCtrlId = "ctrl"+controlId;
+
     return (
     <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} {...layoutPos}
-        id={"ctrl"+controlId} >
+        id={domCtrlId} >
         <div className="myContent" id={"ctrlContent" + controlId}>
             ({controlId} / {type}) {label}
         </div>
@@ -58,9 +60,29 @@ const NoobControl = ({type,
         }
         ></div>
 
-        <div className="landingPad">
+        <div className="landingPadContainer" style={landingPadStyle}>
+            {createLandingPads(rowSpan, colSpan, domCtrlId)}
         </div>
     </div>);
+}
+
+// Create a landing pad to allow the user to reduce the size of the control
+function createLandingPads(rowSpan, colSpan, domParentCtrlId) {
+    let retList = [];
+    for (let i=0; i < rowSpan; i++) {
+        for (let j=0; j < colSpan; j++) {
+            let layoutPos = {
+                'data-layoutx': j,
+                'data-layouty': i,
+            }
+            retList.push(<div className="landingPadCell" 
+                            parentctrlid={domParentCtrlId} 
+                            key={"landingPad"+(i * colSpan + j)}
+                            {...layoutPos}></div>);
+        }
+    }
+
+    return retList;
 }
 
 

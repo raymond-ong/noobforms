@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../styles/noobSection.css';
 import NoobControl from './noobControl';
 
-function sectionMouseMoveHandler(e, resizingControlId, controlIds) {
+function sectionMouseMoveHandler(e, resizingControlId, controlIds, resizingControlObject) {
     if (resizingControlId === null) {
         return;
     }    
@@ -30,11 +30,38 @@ function sectionMouseMoveHandler(e, resizingControlId, controlIds) {
     // TODO: Find the dom of each control, and get each of their rects.
     // Check if there is an overlap with the resized control.
     // If any of the overlaps is invalid (e.g. there is a control that is not 'none'), do not allow resizing 
-    rectContainer = domControl.content.getClientRects()[0];
-    //console.log(`[DEBUG][RESIZER][L-R: ${rectContainer.left} - ${rectContainer.right}][T-B: ${rectContainer.top} - ${rectContainer.bottom}]`);
+    let rectResizing = domControl.content.getClientRects()[0];
+    //console.log(`[DEBUG][RESIZER][L-R: ${rectResizing.left} - ${rectResizing.right}][T-B: ${rectResizing.top} - ${rectResizing.bottom}]`);
 
-    checkOverlaps(resizingControlId, rectContainer, controlIds);
+    // Check overlaps with other controls
+    checkOverlaps(resizingControlId, rectResizing, controlIds); // overlap with other controls
 
+    // Check overlaps with landing pad
+    checkLandingPadOverlap(resizingControlId, rectContainer, rectResizing, resizingControlObject);
+}
+
+function checkLandingPadOverlap(resizingControlId, rectContainer, rectResizing, resizingControlObject) {
+    // will only take effect if the resizing rect's height or width is smaller than the container
+    if (rectContainer.width <= rectResizing.width && 
+        rectContainer.height <= rectResizing.height) {
+            removeAllLandingPadPotentialDrops();
+            return;
+    }    
+    
+    let landingPadsDom = findLandingPadsByParentControl(resizingControlId);
+    //console.log('[DEBUG] checkLandingPadOverlap...' + landingPadsDom.length);
+    //debugger
+    // check if resizing rect covers me
+    landingPadsDom.forEach(landingPad => {
+        let rectLandingPad = landingPad.getClientRects()[0];
+        let isOverlapped = hasOverlap(rectResizing, rectLandingPad);
+        if (isOverlapped) {
+            landingPad.classList.add('landingPadPotentialDrop');
+        }
+        else if (landingPad.classList.contains('landingPadPotentialDrop')) {
+            landingPad.classList.remove('landingPadPotentialDrop');
+        }
+    });
 }
 
 function checkOverlaps(resizingControlId, rectResizing, controlIds) {
@@ -79,7 +106,7 @@ function sectionMouseUpHandler(resizingControlId, controlIds) {
         return;
     }
     
-    console.log('[DEBUG][sectionMouseMoveHandler]' + resizingControlId);
+    console.log('[DEBUG][sectionMouseUpHandler]' + resizingControlId);
 
     controlIds.forEach( currCtrlId => {
         let domControl = findControlDomById(currCtrlId);
@@ -96,6 +123,23 @@ function sectionMouseUpHandler(resizingControlId, controlIds) {
             domControl.content.style.width = domControl.container.style.width;    
         }
     });
+
+    // Remove all the landing pads also
+    removeAllLandingPadPotentialDrops();
+
+}
+
+function removeAllLandingPadPotentialDrops() {
+    let landingPadPotDrops = document.getElementsByClassName('landingPadPotentialDrop');
+    if (landingPadPotDrops.length > 0) {
+        //debugger
+        // console.log('[DEBUG] removeAllLandingPadPotentialDrops' + landingPadPotDrops.length);
+    }
+
+    while (landingPadPotDrops.length > 0) {
+        let currPad = landingPadPotDrops[0];
+        currPad.classList.remove('landingPadPotentialDrop');
+    }
 }
 
 function calculateNewSize(resizingControlId, controlIds) {
@@ -104,34 +148,37 @@ function calculateNewSize(resizingControlId, controlIds) {
         return;
     }
     
-    console.log('[DEBUG][sectionMouseMoveHandler]' + resizingControlId);
+    console.log('[DEBUG][calculateNewSize]' + resizingControlId);
 
     let resizedControlDom = findControlDomById(resizingControlId);
 
     let domControls = findPotentialDrops();
-    if (!domControls || !resizedControlDom) {
+    if (!domControls || !resizedControlDom || domControls.length === 0) {
         return null; // means control was not resized
     }
     
-    let newX = 0;
-    let newY = 0;
+    let maxX = 0;
+    let maxY = 0;
         
-    for (let currControl of domControls) {
+    // TODO: of syntax is not supported in Edge
+    for (let i = 0; i < domControls.length; i++) {
+        let currControl = domControls[i];
         let currX = parseInt(currControl.dataset.layoutx);
         let currY = parseInt(currControl.dataset.layouty);
-        if (currX && currX > newX) {
-            newX = currX;
+        if (currX && currX > maxX) {
+            maxX = currX;
         }
-        if (currY && currY > newY) {
-            newY = currY;
+        if (currY && currY > maxY) {
+            maxY = currY;
         }
     };
 
-    debugger
-
     return {
-        newCols: newX - resizedControlDom.container.dataset.layoutx - resizedControlDom.container.dataset.colspan + 1 + 1,
-        newRows: newY - resizedControlDom.container.dataset.layouty - resizedControlDom.container.dataset.rowspan + 1 + 1,
+        // newCols: newX - resizedControlDom.container.dataset.layoutx - resizedControlDom.container.dataset.colspan + 1 + 1,
+        // newRows: newY - resizedControlDom.container.dataset.layouty - resizedControlDom.container.dataset.rowspan + 1 + 1,
+        // no need to include rowspan...we will eventually disallow resizing into a "blank control"
+        newCols: maxX - resizedControlDom.container.dataset.layoutx + 1,
+        newRows: maxY - resizedControlDom.container.dataset.layouty + 1,
     }
 
 }
@@ -147,12 +194,32 @@ function findControlDomById(controlId) {
     ret.container = retEl[0];
     ret.content = ret.container.firstChild;
     ret.resizer = ret.content.nextSibling;
+    ret.landingPad = ret.resizer.nextSibling;
 
     return ret;    
 }
 
+function findLandingPadsByParentControl(controlId) {
+    let ret = {};
+    let keyQuery = `[parentctrlid="ctrl${controlId}"]`;
+    return document.querySelectorAll(keyQuery);
+}
+
 function findPotentialDrops() {
-    return document.getElementsByClassName("potentialResizeDrop");    
+    let retList = [];
+    retList.push(...document.getElementsByClassName("potentialResizeDrop"));
+    retList.push(...document.getElementsByClassName("landingPadPotentialDrop"));
+    return retList;
+}
+
+function getControlObject(controlId, controls) {
+    if (controlId === null) {
+        return null;
+    }
+    
+    return controls.find(control => {
+        return control.controlId === controlId;
+    })
 }
 
 // use destructuring to capture all the properties passed from upper component
@@ -168,6 +235,7 @@ const NoobSection = ({controls, title, layoutRows, layoutColumns, sectId, resizi
     })
 
     let controlIds = controls.map(control => control.controlId);
+    let resizingControlObject = getControlObject(resizingControlId, controls);
 
     var divStyle = {'gridTemplateColumns': `repeat(${layoutColumns}, 1fr)`};
     console.log('[DEBUG][NoobSection] Rendering...');
@@ -185,7 +253,7 @@ const NoobSection = ({controls, title, layoutRows, layoutColumns, sectId, resizi
         // No need to propagate the mouse move event to the parent
         // Mouse moves do not change the state anyway, just handle here using DOM Manipulation
         onMouseMove = {(e) => {
-            sectionMouseMoveHandler(e, resizingControlId, controlIds)
+            sectionMouseMoveHandler(e, resizingControlId, controlIds, resizingControlObject)
         }
     }
     >

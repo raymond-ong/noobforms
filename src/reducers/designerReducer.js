@@ -10,22 +10,26 @@ const createDefaultControls = (sectIdIn) => {
     let ret = [];
     for (let iRow = 0; iRow < constants.defaultNumRows; iRow++) {
         for (let iCol = 0; iCol < constants.defaultNumColumns; iCol++) {
-            ret.push({
-                type: 'none',
-                selected: false,
-                sectId: sectIdIn,
-                rowSpan: 1,
-                colSpan: 1,
-                name: '', // put an empty string instead of null...textbox control does not bind properly if null
-                label: '',
-                controlId: lastControlId++,
-                x: iCol,
-                y: iRow
-            });
+            ret.push(createControl(iRow, iCol, sectIdIn));
         }
     }
 
     return ret;
+}
+
+function createControl(iRow, iCol, sectIdIn) {
+    return {
+        type: 'none',
+        selected: false,
+        sectId: sectIdIn,
+        rowSpan: 1,
+        colSpan: 1,
+        name: '', // put an empty string instead of null...textbox control does not bind properly if null
+        label: '',
+        controlId: lastControlId++,
+        x: iCol,
+        y: iRow
+    }
 }
 
 const defaultSection = {
@@ -95,18 +99,57 @@ function getNewControls(section, updatedControl) {
     let affectedYStart = updatedControl.y;
     let affectedYEnd = updatedControl.y + updatedControl.rowSpan - 1;
 
-    let retList = [];
+    let retList = []; // controls returned must be arranged according to index
+    let retControlMap = {}; // to ease sorting the list to be returned
+    let xyMap = []; // to help check gaps
+    // Add back the updatedControl and other controls not affected
     section.controls.forEach(control => {
         if (control.x < affectedXStart || control.x > affectedXEnd ||
             control.y < affectedYStart || control.y > affectedYEnd || 
             control.controlId === updatedControl.controlId) {
-                retList.push(control);
+                retControlMap[control.y * section.layoutColumns + control.x] = control;
+                populateXyMap(xyMap, control, section);
             }        
     })
 
-    // TODO Create new controls as necessary -- if size was reduced or reshaped
+    debugger
+    // Create new controls as necessary -- if size was reduced or reshaped
+    // Idea: Check if we still fulfill the rowSpan and colSpan; then find gaps and fill up
+    for (let iRow = 0; iRow < section.layoutRows; iRow++) {
+        for (let iCol = 0; iCol < section.layoutColumns; iCol++) {
+            let index = iRow * section.layoutColumns + iCol;
+            if (xyMap[index] === 1) {
+                retList.push(retControlMap[index])
+            }
+            if (xyMap[index] > 0) {
+                continue; // either there is a control, or this area is within the span of a control
+            }
 
+            // We need to create a new control
+            retList.push(createControl(iRow, iCol, section.sectId));            
+        }
+    }
+    
     return retList;
+}
+
+function populateXyMap(xyMap, control, section) {
+    let xStart = control.x;
+    let xEnd = control.x + control.colSpan;
+    let yStart = control.y;
+    let yEnd = control.y + control.rowSpan;
+
+    console.log(`[DEBUG][populateXyMap][start] ${control.controlId}`);
+    for (let iRow = yStart; iRow < yEnd; iRow++) {
+        for (let iCol = xStart; iCol < xEnd; iCol++) {
+            let index = iRow * section.layoutColumns + iCol;
+            // 1: if this is the control's start X,Y
+            // 2: if this index is within the scope of the control's additional span
+            // undefined: gap
+            xyMap[index] = iRow === yStart && iCol === xStart ? 1 : 2; 
+            console.log(`[DEBUG][populateXyMap] ${index}`);
+        }
+    }
 }
 
 function reconstructXyAftResize(state, updatedControl, newSize) {
@@ -181,15 +224,15 @@ const reducer = (state = initialState, action) => {
         // Maybe we can only re-render affected controls if we update only the affected controls here...
         // So maybe track resizingControl/resizingEvennt inside each control
         newState.resizingControlId = action.control.controlId;
-        //newState.sections = [...state.sections]; // force the section to re-render, so that he will know how to handle mouse move
+        //newState.sections = [...state.sections]; // force the section to re-render...to avoid side effects with control selection...TODO optimize this
         break;
     
-    case 'SECTION_MOUSE_UP':        
+    case 'SECTION_MOUSE_UP':
         let resizingControl = findControlById(newState, newState.resizingControlId);
         newState.resizingControlId = null;        
+        //newState.sections = [...state.sections];
         if (action.newSize) {
-            console.log(`[DEBUG][SECTION_MOUSE_UP][New Size: ${action.newSize.newRows} ${action.newSize.newCols}] `);
-            newState.sections = [...state.sections];
+            console.log(`[DEBUG][SECTION_MOUSE_UP][New Size: ${action.newSize.newRows} ${action.newSize.newCols}] `);            
             if (resizingControl === null) {
                 break;
             }
