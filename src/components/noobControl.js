@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import '../styles/noobControl.css';
 import {connect} from 'react-redux';
 import { DropTarget } from 'react-dnd';
+import * as textboxhelper from '../helpers/controlhelpers/textboxHelper';
+
+const ROW_HEIGHT = 40;
+const CONTROL_PADDING = 20;
+const GRID_GAP = 5;
 
 const NoobControl = ({type, 
                     selected, 
@@ -13,23 +18,30 @@ const NoobControl = ({type,
                     controlId,
                     onSelectControl,
                     onResizerMouseDown,
+                    onControlTypeSelected,
                     x,
-                    y
+                    y,
+                    connectDropTarget, // comes from the collect() function
+                    hovered // potenttial drop target of selecting a control type
                 }) => {
     let ctrlClass = 'noobControl';
     if (selected === true) {
         ctrlClass += ' selectedControl';
     }
+    if (hovered) {
+        ctrlClass += ' hoveredControlTypeDropTarget';
+    }
 
     let ctrlStyle = {
         // set the minHeight instead of height. Height will make the height fixed regardless of the content.
         // minHeight allows the parent container to grow depending on content
-        'minHeight': 30 * rowSpan + 15 * (rowSpan - 1), // 15:
+        // actually we have not accounted for the Grid Gap yet...In case all the controls
+        'minHeight': (ROW_HEIGHT * rowSpan) + (CONTROL_PADDING * (rowSpan - 1)) + (GRID_GAP * (rowSpan - 1)), 
         'gridRowEnd': 'span ' + rowSpan,
         'gridColumnEnd': 'span ' + colSpan,
     };
 
-    //console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
+    console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
 
     // access these in Javascript by x.dataset.layoutx (Note: lowercase)
     let layoutPos = {
@@ -46,11 +58,12 @@ const NoobControl = ({type,
 
     let domCtrlId = "ctrl"+controlId;
 
-    return (
+    return connectDropTarget(
     <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} {...layoutPos}
         id={domCtrlId} >
         <div className="myContent" id={"ctrlContent" + controlId}>
-            ({controlId} / {type}) {label}
+            {/* ({controlId} / {type}) {label} */}
+            {renderControlContent(type, label)}
         </div>
 
         <div className="resizer" id={"ctrlResizer" + controlId}
@@ -85,5 +98,30 @@ function createLandingPads(rowSpan, colSpan, domParentCtrlId, parentX, parentY) 
     return retList;
 }
 
+function renderControlContent(type, label) {
+    switch(type) {
+        case 'textbox':
+            return textboxhelper.renderTextbox(label);
+        default:
+            return '';
+    }
+}
 
-export default NoobControl;
+
+const controlDropTarget = {
+    drop(control, monitor) {
+        let controlType = monitor.getItem();
+        control.onControlTypeSelected(controlType);
+    }
+}
+
+function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        hovered: monitor.isOver(),
+        control: monitor.getItem()
+    }
+}
+
+export default DropTarget('control', controlDropTarget, collect)(NoobControl);
+//export default NoobControl;

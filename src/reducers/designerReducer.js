@@ -112,7 +112,6 @@ function getNewControls(section, updatedControl) {
             }        
     })
 
-    debugger
     // Create new controls as necessary -- if size was reduced or reshaped
     // Idea: Check if we still fulfill the rowSpan and colSpan; then find gaps and fill up
     for (let iRow = 0; iRow < section.layoutRows; iRow++) {
@@ -209,13 +208,12 @@ const reducer = (state = initialState, action) => {
         break;
     case 'SET_CONTROL_TYPE':
         console.log('[Designer Reducer] SET_CONTROL_TYPE...');
-        //debugger
         newState.sections = [...state.sections];
-        let selectedControl  = findSelectedControl(newState.sections, action.selectedControl);
-        if (!selectedControl || selectedControl.length  !== 1) {
+        let selectedControl  = findControlById(newState, action.selectedControl.controlId);
+        if (selectedControl === null) {
             break;
         }
-        selectedControl[0].type = action.controlType.displayName;    
+        selectedControl.type = action.controlType.name;    
         break;
     case 'RESIZE_CONTROL_START':
         //debugger

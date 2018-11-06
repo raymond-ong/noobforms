@@ -1,0 +1,12 @@
+.controlTextbox {
+    /* block: Displays an element as a block element (like <p>). It starts on a new line, and takes up the whole width */
+    display:block; 
+    margin-right: 20px;
+    width: calc(100% - 10px);      
+}
+
+.textboxContainer {
+    overflow: auto;
+    width: 100%;  
+    height: 100%;
+}

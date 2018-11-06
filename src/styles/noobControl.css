@@ -36,9 +36,14 @@
 
 .myContent {
     border: 1px solid blue;
-    padding: 10px;
+    padding-top: 5px;
+    padding-left: 5px;
+    /* for the bottom and right side, add more padding to separate it from the resizer */
+    padding-bottom: 8px; 
+    padding-right: 5px;
+    /* padding: 5px; */
     z-index: 101;    
-    text-align: center;
+    text-align: left;
 
     /* position: relative; */
     position: absolute;
@@ -66,7 +71,6 @@
     z-index: 102;
 }
 
-
 .landingPadContainer {
     display: grid;
     /* background: #bbbb00; */
@@ -92,4 +96,8 @@
 
 .landingPadPotentialDrop {
     background: #2233ff;
+}
+
+.hoveredControlTypeDropTarget {
+    background-color: lightpink
 }

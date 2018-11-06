@@ -12,7 +12,7 @@ const toolBoxItems = [
           logo: '',
      },    
      {
-          name: 'text',
+          name: 'textbox',
           displayName: 'Textbox',
           logo: '',
      },

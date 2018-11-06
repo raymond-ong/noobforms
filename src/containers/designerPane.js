@@ -43,6 +43,15 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
 
+        onControlTypeSelected: (controlType, control) => {
+            console.log('[DEBUG][onControlTypeSelected]');
+            dispatch({
+                type: 'SET_CONTROL_TYPE',
+                controlType,
+                selectedControl: control,
+            });
+        }
+
         /* No need to track the mouse movement here, since the mouse movement will not 
             cause a permanent state change
         onSectionMouseMove: (sectId, e) => {
