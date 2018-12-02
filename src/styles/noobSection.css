@@ -1,15 +1,16 @@
 .noobSectionMain {
-    background-color: lightgoldenrodyellow;
+    /* background-color: lightgoldenrodyellow; */
     padding: 10px
 }
 
 .noobSection {
     display: grid;
     grid-gap: 5px;
-    background-color: lightgoldenrodyellow;
-    padding: 10px
+    /* background-color: lightgoldenrodyellow; */
+    padding: 10px;
     /* grid-template-rows: 50px auto 25px; */
     /* grid-template-columns: 1fr 1fr 1fr; */
+    /* overflow: initial */
 }
 
 .noobSectionTitle {

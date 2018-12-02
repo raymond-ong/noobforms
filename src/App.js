@@ -13,7 +13,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 class App extends Component {
   render() {
     return (      
-      <div id="main">
+      <div id="main">    
         <Navbar/>
         <div className = "mainSplit">          
           <SplitPane className= "theSplit" split="vertical" minSize={200} defaultSize={300}>

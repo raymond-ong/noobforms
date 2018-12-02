@@ -3,8 +3,9 @@ import '../styles/noobControl.css';
 import {connect} from 'react-redux';
 import { DropTarget } from 'react-dnd';
 import * as textboxhelper from '../helpers/controlhelpers/textboxHelper';
+import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
 
-const ROW_HEIGHT = 40;
+const ROW_HEIGHT = 75;
 const CONTROL_PADDING = 20;
 const GRID_GAP = 5;
 
@@ -102,6 +103,8 @@ function renderControlContent(type, label) {
     switch(type) {
         case 'textbox':
             return textboxhelper.renderTextbox(label);
+        case 'combo':
+            return comboboxHelper.renderCombobox(label);
         default:
             return '';
     }

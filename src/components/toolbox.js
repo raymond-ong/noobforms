@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import '../styles/toolbox.css'
 import {DragSource} from 'react-dnd'
 import ToolItem from './toolItem';
+import { Dropdown } from 'semantic-ui-react';
 
 const toolBoxItems = [
      {
@@ -84,8 +85,9 @@ class Toolbox extends Component {
                return <ToolItem controlType={x} key={x.name}/>
           })
 
-          //debugger
-          let ret = <div className="toolBox">{tools}</div>;
+          let ret = <div className="toolBox">
+          {tools}
+          </div>;
 
 
          return ret;

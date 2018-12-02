@@ -1,6 +1,6 @@
 .btmFooter {
   grid-row: 3 / 4;  
-  background-color:darkseagreen;
+  background-color:#555555;
   color: #fffafa;
   padding-left: 10px
 }
@@ -83,43 +83,63 @@ body {
 
 .navbar {
   display: grid;
-  grid-template-columns: fit-content(20%) auto;
-  background-color:darkseagreen;
+  /* Allocate 10% of column width for the logo, then the rest for the menu */
+  grid-template-columns: fit-content(70px) auto; /* 70px = 50px width + 10px padding left&right */
+  background-color:#555555;
   grid-row: 1 / 2;
-  /* height: px; */
-  /* flex: 0 1 auto; */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  /* Use line height to center the text vertically */
+  line-height: 40px;
 }
 
 .nav-logo {  
-  background-color: beige;
-  color: darkcyan;
+  /* background-color: beige;
+  color: darkcyan; */
   /* align-self: center;
   justify-self: center; */
   font-weight: bold;
-  /* display: inline-block; */
+  /* display: block; */
   text-align: center;
-  padding: 15px;
-  height: 20px; /* 20 + 2 * 15 = 50 */
+  /* vertical-align: middle; */
+  /* height: 100%; */
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  /* height: 20px; 20 + 2 * 15 = 50 */
 }
 
 .nav-list {
   list-style-type: none;
-  /* display: inline-block;   */
+  margin: 0;
+  overflow: hidden;
+  /* border: 1px solid red */
+  padding: 0;
+  
 }
 
 
 .nav-list li{
-  display: inline;
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: 0;
+  /* border: 1px solid red; */  
 }
 
-.nav-list li a:hover{
-  border-bottom: 2px solid white;
+.nav-list li:hover{
+  /* border-bottom: 2px solid white; */
+  background-color: darkcyan;
 }
 
 .nav-list li a{
+  /* display: inline-block; */
   text-decoration: none;
-  padding: 10px;
-  color: #fffafa;  
+  color: #fffafa;    
 }
 
 /* Forms */
@@ -176,19 +196,32 @@ body {
 
 #main {
   display: grid;
-  grid-template-rows: 50px auto 25px;
+  /* 50px for the top menu, 25px for the footer and the space in between for the main content */
+  grid-template-rows: 40px auto 25px;
   grid-template-columns: 1fr;
+  /* Full height; no vertical scrollbar */
   height: 100vh;
 }
 
-#designer {
+.designer {
   /* background-color: purple; */
   overflow:auto;
   /* display: grid;
   grid-template-rows: auto; */
-  height: calc(100vh - 75px);
+
+  /* 50px for the top menu, 25px for the footer */
+  height: calc(100vh - 40px - 25px);
 }
 
 /* .sideSplit {
   height: calc(100vh); 
 } */
+
+.noobLogo {
+  width:70px;
+  height:40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 40px;
+  margin: 0;
+}

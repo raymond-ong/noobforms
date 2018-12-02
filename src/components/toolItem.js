@@ -8,7 +8,8 @@ class ToolItem extends Component {
           //console.log('render for ToolItem ' + this.props.controlType.displayName);
           //debugger
 
-          return connectDragSource(<div className="toolItem">{this.props.controlType.displayName}</div>);
+        //   return connectDragSource(<div className="toolItem">{this.props.controlType.displayName}</div>);
+          return connectDragSource(<div className="ui blue label">{this.props.controlType.displayName}</div>);
      }
 }
 

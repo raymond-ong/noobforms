@@ -3,7 +3,7 @@ import NoobSection from './noobSection';
 
 const NoobSectionList = ({sections, resizingControlId,
                         onSelectControl, onResizerMouseDown, onSectionMouseUp, onControlTypeSelected}) => (
-    <div>
+    <div className='designer'>
         {sections.map(section => 
             <NoobSection
                 key={'sect' + section.sectId}

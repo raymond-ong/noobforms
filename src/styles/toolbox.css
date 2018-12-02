@@ -1,8 +1,9 @@
 .toolboxContainer {
      padding: 10px;
      /* height: 100% */     
-     overflow: auto;
+     /* overflow: auto; */
      width: 100%;
+     position: relative;
 }
 
 .toolBox {
@@ -10,6 +11,10 @@
      grid-template-columns: 1fr 1fr 1fr;
      grid-template-rows: auto;
      width: 100%;
+     grid-gap: 3px;
+     position: relative;
+     /* overflow: visible;
+     overflow-y: visible; */
 }
 
 .toolItem {

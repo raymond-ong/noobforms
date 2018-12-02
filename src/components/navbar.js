@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import '../App.css';
+import logo from '../images/noob2_small.png' // relative path to image 
 
-class Navbar extends Component {
+class Navbar extends Component {    
     render() {
+        var style = {'backgroundColor': 'red'};
         return <div className="navbar">
-            <div className="nav-logo">Noob Forms</div>
+            <img className="noobLogo" src={logo}></img>
+            
             <ul className="nav-list">
-                <li><a href="#Designer">DESIGNER</a></li>
-                <li><a href="#Data">DATA LIST</a></li>
+                <li><a href="#Designer">Designer</a></li>
+                <li><a href="#Data">Data List</a></li>
             </ul>
-        </div>;
+        </div>;        
     }
 }
 

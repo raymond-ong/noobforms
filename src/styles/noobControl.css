@@ -1,13 +1,11 @@
 .noobControl {
     background-color: #d6e8f5;
-    padding: 10px;
-    /* min-height: 20px; */
+    padding: 5px;
     /* To prevent user from highlighting the text */
     user-select: none;
-    /* border-radius: .25rem; */
     /* needed to position the resizer */
     position: relative;
-    /* z-index: 100; */
+    overflow: visible;
 }
 
 .selectedControl {
@@ -22,8 +20,8 @@
 .resizingContent {
     background-color: #aa33cc;
     opacity: 0.5;
-    z-index: 10000;
-    position: absolute;
+    z-index: 20;
+    position: absolute !important; /* set important to override the relative position when not resizing */
     left: 10;
     right: 10;
     top: 10;
@@ -35,22 +33,23 @@
 }
 
 .myContent {
-    border: 1px solid blue;
-    padding-top: 5px;
-    padding-left: 5px;
+    /* border: 1px solid blue; */
+    padding-top: 0px;
+    padding-left: 0px;
     /* for the bottom and right side, add more padding to separate it from the resizer */
-    padding-bottom: 8px; 
-    padding-right: 5px;
+    padding-bottom: 0px; 
+    padding-right: 0px;
     /* padding: 5px; */
-    z-index: 101;    
+    z-index: 10;
     text-align: left;
 
-    /* position: relative; */
-    position: absolute;
+    position: relative; /* Use relative instead of abs so that if content requires more height, the entire row will becoem taller */
+    /* position: absolute; */
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
+    overflow: visible;
 }
 
 .resizer {
@@ -68,16 +67,13 @@
     cursor: se-resize;
     bottom: 0;
     right: 0;
-    z-index: 102;
+    z-index: 30;
 }
 
 .landingPadContainer {
     display: grid;
     /* background: #bbbb00; */
     opacity: 0.5;
-    z-index: 50;
-    /* height: 100%;
-    width: 100%; */
     position: absolute;
     left: 0;
     right: 0;
@@ -86,7 +82,6 @@
     grid-template-rows: 1fr 1fr;
     grid-gap: 5px;
     padding: 0px;
-    /* grid-template-columns: 1fr 1fr; */
 }
 
 .landingPadCell {

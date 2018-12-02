@@ -7,6 +7,8 @@ import registerServiceWorker from './registerServiceWorker';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import reducer from './reducers/rootreducer';
+import 'semantic-ui-css/semantic.min.css';
+//import "antd/dist/antd.css";
 
 const store = createStore( reducer);
 
