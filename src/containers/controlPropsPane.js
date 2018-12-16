@@ -3,53 +3,91 @@ import '../App.css';
 import {connect} from 'react-redux';
 import * as constants from '../constants';
 import '../styles/controlProps.css';
+import '../styles/labelHelper.css';
+import { Message } from 'semantic-ui-react';
+import {getToolItem} from '../components/toolbox';
+import * as textboxHelper from '../helpers/controlhelpers/textboxHelper';
+import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
 
 
 class ControlPropsPane extends Component {
     render() {
         let propsEl = null;
         let applyButton = null;
+        let titleEl = null;
         //debugger;
 
         if (this.props.selectedType === constants.TYPE_SECTION) {   
             propsEl = this.getSectionProps();  
             applyButton =   this.getApplyButton();    
         }
-        else if (this.props.selectedType === constants.TYPE_CONTROL) {
+        else if (this.props.selectedType === constants.TYPE_CONTROL && 
+            this.props.selectedControl.type !== constants.TYPE_CONTROL_NONE) {
             //propsEl = <div>Control selected</div>;
+            titleEl = <div className="propsTitle">{getToolItem(this.props.selectedControl.type).displayName + ' Properties'}</div>;
             propsEl = this.getControlProps(this.props.selectedControl);
             applyButton =   this.getApplyButton();
         }
         else {
-            propsEl = <div>No Section or Control selected</div>;
+            // if nothing is selected, display message
+            propsEl = <Message warning>No Section or Control selected</Message>;
+            applyButton = null;
         }
-        // if nothing is selected, display message
-        
-
-        return <div id="controlProps" className="controlPropsPane"><b>Properties</b>{propsEl}{applyButton}</div>;
+                
+        return <div id="controlProps" className="controlPropsPane">{titleEl}{propsEl}{applyButton}</div>;
     }
 
-    getControlProps() {
+    getControlProps(selectedControl) {
         //debugger
-        let ret = <div>
-            <label className="formLabel">Control Type:
-                <input type="text" name="type" className="formInput" value={this.props.controlType} onChange={this.props.ontextChangehandler.bind(this)}/>
-            </label>
-            <label className="formLabel">Control Name:
-                <input type="text" name="name" className="formInput" value={this.props.controlName} onChange={this.props.ontextChangehandler.bind(this)}/>
-            </label>
-            <label className="formLabel">Label:
-                <input type="text" name="label" className="formInput" value={this.props.controlLabel} onChange={this.props.ontextChangehandler.bind(this)}/>
-            </label>
-            <label className="formLabel">Row Span:
-                <input type="text" name="rowSpan" className="formInput" value={this.props.controlRowSpan} onChange={this.props.onNumChangehandler.bind(this)}/>
-            </label>
-            <label className="formLabel">Column Span:
-                <input type="text" name="colSpan" className="formInput" value={this.props.controlColSpan} onChange={this.props.onNumChangehandler.bind(this)}/>
-            </label>
-            </div>;
+        var style={
+            'marginRight': '5px',
+            'marginTop': '0px',
+            'padding': '0px',
+        };
 
-        return ret;
+        switch(selectedControl.type) {
+            case 'textbox':
+                return textboxHelper.renderControlProps(selectedControl);
+            case 'combo':
+                return comboboxHelper.renderControlProps(selectedControl);
+            default:
+                return null;
+        }
+
+        // let ret = <div>
+        //     <label className="controlLabel">Control Type:
+        //     </label>
+        //     <Input size='mini' fluid value={getToolItem(selectedControl.type).displayName}>
+        //     </Input>
+
+        //     <label className="controlLabel">Control Name:
+        //     </label>
+        //     <Input size='mini' fluid value={selectedControl.name}>
+        //     </Input>
+
+        //     <label className="controlLabel">Control Label:
+        //     </label>
+        //     <Input size='mini' fluid value={selectedControl.label}>
+        //     </Input>
+
+        //     {/* <label className="formLabel">Control Type:
+        //         <input type="text" name="type" className="formInput" value={this.props.controlType} onChange={this.props.ontextChangehandler.bind(this)}/>
+        //     </label>
+        //     <label className="formLabel">Control Name:
+        //         <input type="text" name="name" className="formInput" value={this.props.controlName} onChange={this.props.ontextChangehandler.bind(this)}/>
+        //     </label>
+        //     <label className="formLabel">Label:
+        //         <input type="text" name="label" className="formInput" value={this.props.controlLabel} onChange={this.props.ontextChangehandler.bind(this)}/>
+        //     </label>
+        //     <label className="formLabel">Row Span:
+        //         <input type="text" name="rowSpan" className="formInput" value={this.props.controlRowSpan} onChange={this.props.onNumChangehandler.bind(this)}/>
+        //     </label>
+        //     <label className="formLabel">Column Span:
+        //         <input type="text" name="colSpan" className="formInput" value={this.props.controlColSpan} onChange={this.props.onNumChangehandler.bind(this)}/>
+        //     </label> */}
+        //     </div>;
+
+        // return ret;
     }
 
     getSectionProps() {

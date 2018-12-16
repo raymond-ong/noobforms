@@ -47,11 +47,17 @@ const reducer = (state = initialState, action) => {
             //debugger
             newState.selectedType = constants.TYPE_CONTROL;
             newState.selectedControl = action.control;
-            newState.controlStates.rowSpan = action.control.rowSpan;
-            newState.controlStates.colSpan = action.control.colSpan;
-            newState.controlStates.name = action.control.name;
-            newState.controlStates.label = action.control.label;
-            newState.controlStates.type = action.control.type;
+            // newState.controlStates.rowSpan = action.control.rowSpan;
+            // newState.controlStates.colSpan = action.control.colSpan;
+            // newState.controlStates.name = action.control.name;
+            // newState.controlStates.label = action.control.label;
+            // newState.controlStates.type = action.control.type;
+            break;
+        case 'SET_CONTROL_TYPE':
+            console.log('[DEBUG][Control Props Reducer][SET_CONTROL_TYPE]');
+            newState.selectedType = constants.TYPE_CONTROL;
+            newState.selectedControl = {...action.selectedControl};
+            newState.selectedControl.type = action.controlType.name;
             break;
         default:
             break;

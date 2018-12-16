@@ -24,7 +24,7 @@
 }
 
 .Resizer {
-  background: #058805;
+  background: #63b7df;
   opacity: .2;
   z-index: 1;
   /* -moz-box-sizing: border-box;
@@ -166,7 +166,7 @@ body {
 }
 
 .formButton {
-  margin-top: 20px;
+  margin-top: 10px;
   display:block;
   font-size: 1.2em;
   /* background-color: darkseagreen; */
@@ -174,7 +174,6 @@ body {
   padding: .375rem .75rem;
   user-select: none;user-select: none;
   float: right;
-  margin-right: 10px;
   color: #ffffff;
   font-weight: 400;
   border-radius: .25rem;

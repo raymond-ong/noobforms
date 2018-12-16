@@ -2,6 +2,7 @@
 // => declared in the rootReducer's combineReducer
 // In the mapStateToProps of the Designer Pane, it is setting the local props from state.designer.xxx
 import * as constants from '../constants';
+import {getToolItem} from '../components/toolbox';
 
 let lastControlId = 0;
 let letSectionId = 0;
@@ -164,6 +165,34 @@ function reconstructXyAftResize(state, updatedControl, newSize) {
     sectionUpdated.controls = getNewControls(sectionUpdated, updatedControl);
 }
 
+function selectControl(state, newSelectedControlId) {
+    let oldSelectedControl = findControlById(state, state.selectedControlId);
+    if (oldSelectedControl !== null) {
+        oldSelectedControl.selected = false;
+    }
+
+    state.selectedControlId = newSelectedControlId;
+    let newSelectedControl = findControlById(state, newSelectedControlId);
+    if (newSelectedControl !== null) {
+        newSelectedControl.selected = true;
+    }
+}
+
+function generateDefaultName(type, sections) {
+    let i = 0;
+    while(true) {
+        let currName = type + i;
+        if (!nameExists(currName, sections)) {
+            return currName;
+        }
+        i++;
+    }
+}
+
+function nameExists(name, sections) {
+    return sections.find(sect => sect.controls.find(ctrl => ctrl.name === name));
+}
+
 const reducer = (state = initialState, action) => {
     const newState = {...state};
     switch(action.type) {
@@ -194,16 +223,7 @@ const reducer = (state = initialState, action) => {
         }
 
         newState.sections = [...state.sections];
-        let oldSelectedControl = findControlById(newState, newState.selectedControlId);
-        if (oldSelectedControl !== null) {
-            oldSelectedControl.selected = false;
-        }
-
-        newState.selectedControlId = action.control.controlId;
-        let newSelectedControl = findControlById(newState, action.control.controlId);
-        if (newSelectedControl !== null) {
-            newSelectedControl.selected = true;
-        }
+        selectControl(newState, action.control.controlId);
         
         break;
     case 'SET_CONTROL_TYPE':
@@ -213,7 +233,12 @@ const reducer = (state = initialState, action) => {
         if (selectedControl === null) {
             break;
         }
-        selectedControl.type = action.controlType.name;    
+        selectedControl.type = action.controlType.name;
+        selectedControl.name = generateDefaultName(selectedControl.type, newState.sections);
+        selectedControl.label = selectedControl.name;
+
+        // Also set this as selected
+        selectControl(newState, selectedControl.controlId);
         break;
     case 'RESIZE_CONTROL_START':
         //debugger

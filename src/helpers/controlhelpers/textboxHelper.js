@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/textboxHelper.css';
 import '../../styles/labelHelper.css';
-import { Input } from 'semantic-ui-react';
+import { Input, Segment, Label } from 'semantic-ui-react';
 
 // const DEFAULT_LABEL = 'Textbox Thequickbrownfoxjumpsoverthelazydog';
 const DEFAULT_LABEL = 'Textbox';
@@ -17,19 +17,35 @@ export function renderTextbox(label) {
         'padding': '0px',
     }; 
     return <div className="textboxContainer">        
-        <label className="controlLabel">{label}:            
-        </label>
-        {/* <input type="text" name="type" className="controlTextbox" value="" /> */}
-        {/* <div className="controlTextbox"> */}
+        <div className="controlLabel">{label}:            
+        </div>
             <Input 
                 size='mini' 
                 fluid
-                // label={label} 
-                // labelPosition='left'
                 style={style}
                 placeholder={label}>
             </Input>
-        {/* </div> */}
+    </div>
+}
 
+let localState = {};
+
+function onChangeHandler(e) {
+    debugger
+    localState[e.target.name] = e.target.value;    
+}
+
+export function renderControlProps(control) {
+    localState.ctrlName = control.name;
+    return <div>
+        <div className="controlLabel">Name:
+        </div>
+        <Input size='mini' fluid value={localState.ctrlName} onChange={onChangeHandler} name='ctrlName'>
+        </Input>
+
+        <div className="controlLabel">Label:
+        </div>
+        <Input size='mini' fluid value={control.label}>
+        </Input>
     </div>
 }

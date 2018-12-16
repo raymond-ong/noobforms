@@ -29,8 +29,8 @@ import controlProps from './controlPropsReducer';
 //import noobControl from './noobControlReducer';
 
 const noobApp = combineReducers({    
-    controlProps,
     designer, 
+    controlProps,
     //appSplitPane
     //noobControl
 })

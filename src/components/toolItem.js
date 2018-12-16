@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {DragSource} from 'react-dnd'
 import '../styles/toolbox.css'
+import { Label } from 'semantic-ui-react'
 
 class ToolItem extends Component { 
      render() {
@@ -9,7 +10,18 @@ class ToolItem extends Component {
           //debugger
 
         //   return connectDragSource(<div className="toolItem">{this.props.controlType.displayName}</div>);
-          return connectDragSource(<div className="ui blue label">{this.props.controlType.displayName}</div>);
+          //return connectDragSource(<div className="ui blue label">{this.props.controlType.displayName}</div>);
+          //return connectDragSource(<div>{this.props.controlType.displayName}</div>);
+          return connectDragSource(<div className="toolItemContainerd">
+               <Label 
+                    //color="blue" 
+                    color="teal" 
+                    style={{display: 'block'}} // fluid does not work for labels
+                    icon={this.props.controlType.icon}
+                    //icon='mail'
+                    content={this.props.controlType.displayName}
+               />
+          </div>);
      }
 }
 

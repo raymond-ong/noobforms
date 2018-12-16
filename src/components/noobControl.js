@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import '../styles/noobControl.css';
-import {connect} from 'react-redux';
 import { DropTarget } from 'react-dnd';
 import * as textboxhelper from '../helpers/controlhelpers/textboxHelper';
 import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
 
-const ROW_HEIGHT = 75;
+const ROW_HEIGHT = 65;
 const CONTROL_PADDING = 20;
 const GRID_GAP = 5;
 
@@ -42,7 +41,7 @@ const NoobControl = ({type,
         'gridColumnEnd': 'span ' + colSpan,
     };
 
-    console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
+    //console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
 
     // access these in Javascript by x.dataset.layoutx (Note: lowercase)
     let layoutPos = {
@@ -109,7 +108,6 @@ function renderControlContent(type, label) {
             return '';
     }
 }
-
 
 const controlDropTarget = {
     drop(control, monitor) {

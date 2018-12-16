@@ -1,83 +1,94 @@
 import React, { Component } from 'react';
 import '../styles/noobControl.css';
-import {connect} from 'react-redux'
 import '../styles/toolbox.css'
-import {DragSource} from 'react-dnd'
 import ToolItem from './toolItem';
-import { Dropdown } from 'semantic-ui-react';
+import { Input, Segment, Label } from 'semantic-ui-react';
 
-const toolBoxItems = [
+export const toolBoxItems = [
      {
           name: 'section',
           displayName: 'Section',
-          logo: '',
+          icon: 'wpforms',
      },    
      {
           name: 'textbox',
           displayName: 'Textbox',
-          logo: '',
+          icon: 'font',
      },
      {
           name: 'richText',
           displayName: 'Rich Text',
-          logo: ''
+          icon: 'paint brush'
      },
      {
         name: 'label',
         displayName: 'Label',
-        logo: ''
+        icon: 'info'
    },
 
      {
           name: 'numeric',
           displayName: 'Number',
-          logo: ''
+          icon: 'sort numeric up'
      },
      {
           name: 'date',
-          displayName: 'Date Time',
-          logo: ''
+          displayName: 'Date',
+          icon: 'calendar alternate'
      },
      {
           name: 'combo',
           displayName: 'Combo',
-          logo: ''
+          icon: 'dropdown'
      },
      {
           name: 'checkbox',
-          displayName: 'Checkbox',
-          logo: ''
+          displayName: 'Check',
+          icon: 'check square outline'
      },
      {
           name: 'table',
           displayName: 'Table',
-          logo: ''
+          icon: 'table'
      },
      {
           name: 'User',
           displayName: 'User',
-          logo: ''
+          icon: 'user circle'
      },
      {
         name: 'Image',
         displayName: 'Image',
-        logo: ''
+        icon: 'image outline'
     },
     {
         name: 'Video',
         displayName: 'Video',
-        logo: ''
+        icon: 'video play'
     },
 ];
+
+export function getToolItem(toolName) {
+     return toolBoxItems.find((toolItem) => {
+          return toolItem.name === toolName;
+     })
+};
 
 
 class Toolbox extends Component {    
 
     render() {
-        return <div className="toolboxContainer"><b>Toolbox</b>
+        return <div className="toolboxContainer">
+               <div className="toolboxTitle">Toolbox</div>
                <div className="toolList">{this.populateToolbox()}
                 </div>
-                </div>
+          </div>
+     // return <div className="toolboxContainer">
+     //      <Segment className="toolboxContainer">
+     //           <Label fluid attached="top">Toolbox</Label>
+     //           <div className="toolList">{this.populateToolbox()}</div>
+     //      </Segment>
+     //      </div>
     }
 
     populateToolbox() {        
