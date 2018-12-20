@@ -8,7 +8,7 @@ import { Message } from 'semantic-ui-react';
 import {getToolItem} from '../components/toolbox';
 import * as textboxHelper from '../helpers/controlhelpers/textboxHelper';
 import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
-
+import ComboboxProps from '../helpers/controlprops/comboboxProps';
 
 class ControlPropsPane extends Component {
     render() {
@@ -38,7 +38,7 @@ class ControlPropsPane extends Component {
     }
 
     getControlProps(selectedControl) {
-        //debugger
+        debugger
         var style={
             'marginRight': '5px',
             'marginTop': '0px',
@@ -47,9 +47,10 @@ class ControlPropsPane extends Component {
 
         switch(selectedControl.type) {
             case 'textbox':
-                return textboxHelper.renderControlProps(selectedControl);
+                return textboxHelper.renderControlProps(selectedControl, this.props.controlStates, this.textChangedHandler.bind(this));
             case 'combo':
-                return comboboxHelper.renderControlProps(selectedControl);
+                //return comboboxHelper.renderControlProps(selectedControl, this.props.controlStates);
+                return <ComboboxProps controlProps={this.props.controlStates}/>;
             default:
                 return null;
         }
@@ -109,9 +110,15 @@ class ControlPropsPane extends Component {
     getApplyButton() {
         return <button type="button" onClick={() => this.props.onApplyClicked(this.props)} className="formButton">Apply</button>;
     }
+
+    textChangedHandler(e, data) {
+        debugger
+        this.props.controlStates[e.target.name] = e.target.value;
+    }
 }
 
 // These will become the props of this component
+// These props come from the reducer
 const mapStateToProps = (state) => {
     //debugger
     return {
@@ -121,11 +128,13 @@ const mapStateToProps = (state) => {
 
         // make a copy of the control or section's props instead of directly binding to the selected control's props
         // because we want to pass the changes only when the Apply button is clicked
-        controlRowSpan: state.controlProps.controlStates.rowSpan,
-        controlColSpan: state.controlProps.controlStates.colSpan,
-        controlLabel: state.controlProps.controlStates.label,
-        controlName: state.controlProps.controlStates.name,
-        controlType: state.controlProps.controlStates.type,
+        controlStates: state.controlProps.controlStates
+
+        // controlRowSpan: state.controlProps.controlStates.rowSpan,
+        // controlColSpan: state.controlProps.controlStates.colSpan,
+        // controlLabel: state.controlProps.controlStates.label,
+        // controlName: state.controlProps.controlStates.name,
+        // controlType: state.controlProps.controlStates.type,
     }
 }
 

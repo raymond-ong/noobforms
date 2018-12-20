@@ -28,24 +28,34 @@ export function renderTextbox(label) {
     </div>
 }
 
-let localState = {};
-
-function onChangeHandler(e) {
+function onChangeHandler(e, data) {
     debugger
-    localState[e.target.name] = e.target.value;    
+    // this will not work. Changing the state requires calling setState() or firing Redux actions
+    this[e.target.name] = e.target.value;    
 }
 
-export function renderControlProps(control) {
-    localState.ctrlName = control.name;
+export function renderControlProps(control, state, textChanged) {
     return <div>
         <div className="controlLabel">Name:
         </div>
-        <Input size='mini' fluid value={localState.ctrlName} onChange={onChangeHandler} name='ctrlName'>
+        <Input size='mini' fluid 
+            //value={state.name} 
+            // don't use value; otherwise we need to bind it to the state, and manage the value using onChange
+            defaultValue={state.name}
+            name='name'
+            //onChange={onChangeHandler.bind(state)} 
+            // onChange={
+            //     (e) => {
+            //         debugger
+            //         state.name = e.target.value;
+            //     }} 
+            //onChange={textChanged}
+        >
         </Input>
 
         <div className="controlLabel">Label:
         </div>
-        <Input size='mini' fluid value={control.label}>
+        <Input size='mini' fluid defaultValue={control.label}>
         </Input>
     </div>
 }

@@ -11,7 +11,9 @@ const initialState = {
         rowSpan: 0,
         colSpan: 0,
         label: '',
-        name: ''
+        name: '',
+        textboxStates: {},
+        comboStates: {}
     }
 
     // section states of the selected section
@@ -58,6 +60,13 @@ const reducer = (state = initialState, action) => {
             newState.selectedType = constants.TYPE_CONTROL;
             newState.selectedControl = {...action.selectedControl};
             newState.selectedControl.type = action.controlType.name;
+            newState.controlStates = {...newState.controlStates,
+                type: constants.TYPE_CONTROL,
+                rowSpan: action.selectedControl.rowSpan,
+                colSpan: action.selectedControl.colSpan,
+                label: action.selectedControl.label,
+                name: action.selectedControl.name,                
+            }
             break;
         default:
             break;
