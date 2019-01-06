@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import '../styles/noobControl.css';
-import { DropTarget } from 'react-dnd';
+import { DropTarget, DragSource } from 'react-dnd';
 import * as textboxhelper from '../helpers/controlhelpers/textboxHelper';
 import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
+import * as constants from '../constants';
 
 const ROW_HEIGHT = 65;
 const CONTROL_PADDING = 20;
@@ -19,9 +20,12 @@ const NoobControl = ({type,
                     onSelectControl,
                     onResizerMouseDown,
                     onControlTypeSelected,
+                    onMoveControl,
                     x,
                     y,
                     connectDropTarget, // comes from the collect() function
+                    connectDragSource,
+                    connectDragPreview,
                     hovered // potenttial drop target of selecting a control type
                 }) => {
     let ctrlClass = 'noobControl';
@@ -58,7 +62,8 @@ const NoobControl = ({type,
 
     let domCtrlId = "ctrl"+controlId;
 
-    return connectDropTarget(
+    return connectDragSource(
+    connectDropTarget(
     <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} {...layoutPos}
         id={domCtrlId} >
         <div className="myContent" id={"ctrlContent" + controlId}>
@@ -76,7 +81,7 @@ const NoobControl = ({type,
         <div className="landingPadContainer" style={landingPadStyle}>
             {createLandingPads(rowSpan, colSpan, domCtrlId, x, y)}
         </div>
-    </div>);
+    </div>));
 }
 
 // Create a landing pad to allow the user to reduce the size of the control
@@ -109,10 +114,18 @@ function renderControlContent(type, label) {
     }
 }
 
+// For Dropping from the toolbox or Moving control to a different position
 const controlDropTarget = {
     drop(control, monitor) {
-        let controlType = monitor.getItem();
-        control.onControlTypeSelected(controlType);
+        debugger
+        let dropObj = monitor.getItem();
+        if (dropObj.dndActionType === constants.DND_ACTION_SET_CONTROL_TYPE) {
+            control.onControlTypeSelected(dropObj.controlType);
+        }
+        else if (dropObj.dndActionType === constants.DND_ACTION_MOVE_CONTROL) {
+            control.onMoveControl(dropObj.control);
+        }
+        
     }
 }
 
@@ -124,5 +137,22 @@ function collect(connect, monitor) {
     }
 }
 
-export default DropTarget('control', controlDropTarget, collect)(NoobControl);
+// For Moving controls to a different position
+const itemSource = {
+    beginDrag(props) {
+         //debugger
+         return props
+    }
+}
+
+function collectDragSrc(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+        connectDragPreview: connect.dragPreview(),
+        //isDragging: monitor.isDragging()
+    }
+}
+
+var dropTarget = DropTarget('control', controlDropTarget, collect)(NoobControl);
+export default DragSource('control', itemSource, collectDragSrc)(dropTarget);
 //export default NoobControl;

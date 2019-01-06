@@ -11,3 +11,6 @@ export const defaultSectionName = 'Section X';
 export const TYPE_CONTROL = 'Control';
 export const TYPE_SECTION = 'Section';
 export const TYPE_CONTROL_NONE = 'none';
+
+export const DND_ACTION_SET_CONTROL_TYPE = 'DND_SET_CONTROL_TYPE';
+export const DND_ACTION_MOVE_CONTROL = 'DND_MOVE_CONTROL';

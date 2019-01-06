@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {DragSource} from 'react-dnd'
 import '../styles/toolbox.css'
 import { Label } from 'semantic-ui-react'
+import * as constants from '../constants';
 
 class ToolItem extends Component { 
      render() {
@@ -28,7 +29,10 @@ class ToolItem extends Component {
 const itemSource = {
      beginDrag(props) {
           //debugger
-          return props.controlType
+          return {
+               'arg': props.controlType,
+               'dndActionType': constants.DND_ACTION_SET_CONTROL_TYPE
+          }
      }
  }
  

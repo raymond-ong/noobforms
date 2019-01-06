@@ -22,6 +22,7 @@ class ControlPropsPane extends Component {
             applyButton =   this.getApplyButton();    
         }
         else if (this.props.selectedType === constants.TYPE_CONTROL && 
+            this.props.selectedControl.type !== '' &&
             this.props.selectedControl.type !== constants.TYPE_CONTROL_NONE) {
             //propsEl = <div>Control selected</div>;
             titleEl = <div className="propsTitle">{getToolItem(this.props.selectedControl.type).displayName + ' Properties'}</div>;
