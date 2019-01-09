@@ -193,6 +193,27 @@ function nameExists(name, sections) {
     return sections.find(sect => sect.controls.find(ctrl => ctrl.name === name));
 }
 
+function exchangePositions(sections, control1, control2) {
+    debugger
+    // TODO: consider exchanging positions between 2 sections
+    // Exchange the properties
+    let tempX = control2.x;
+    let tempY = control2.y;
+    control2.x = control1.x;
+    control2.y = control1.y;
+    control1.x = tempX;
+    control1.y = tempY;
+
+    // Swap the elements in the section
+    // Assume 1 section only for now
+    let section = sections[0];
+    let control1Idx = section.controls.indexOf(control1);
+    let control2Idx = section.controls.indexOf(control2);
+    let tempObj = control1;
+    section.controls[control1Idx] = control2;
+    section.controls[control2Idx] = tempObj;
+}
+
 const reducer = (state = initialState, action) => {
     const newState = {...state};
     switch(action.type) {
@@ -271,6 +292,12 @@ const reducer = (state = initialState, action) => {
         newState.resizingControl = null;
         newState.resizingEvent = null;
 
+        break;
+    case 'MOVE_CONTROL':
+        newState.sections = [...state.sections];
+        let control1 = findControlById(newState, action.droppedControl.controlId);
+        let control2 = findControlById(newState, action.destControl.controlId);
+        exchangePositions(newState.sections, control1, control2);
         break;
     }
 

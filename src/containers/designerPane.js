@@ -43,6 +43,15 @@ const mapDispatchToProps = (dispatch) => {
             });
         },
 
+        onMoveControl: (droppedControl, destControl) => {
+            console.log('[DEBUG][MovedControl] sectid');
+            dispatch({
+                type: 'MOVE_CONTROL',
+                droppedControl,
+                destControl
+            });
+        },
+
         onControlTypeSelected: (controlType, control) => {
             console.log('[DEBUG][onControlTypeSelected]');
             dispatch({

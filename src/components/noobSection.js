@@ -224,7 +224,7 @@ function getControlObject(controlId, controls) {
 
 // use destructuring to capture all the properties passed from upper component
 const NoobSection = ({controls, title, layoutRows, layoutColumns, sectId, resizingControlId,
-                    onSelectControl, onResizerMouseDown, onSectionMouseUp, onControlTypeSelected}) => {
+                    onSelectControl, onResizerMouseDown, onSectionMouseUp, onControlTypeSelected, onMoveControl}) => {
     let controlComps = controls.map((control) => {
         return <NoobControl 
                 key={'ctrl' + control.controlId} 
@@ -232,6 +232,7 @@ const NoobSection = ({controls, title, layoutRows, layoutColumns, sectId, resizi
                 onSelectControl={() => onSelectControl(control)}
                 onResizerMouseDown={(e) => onResizerMouseDown(control, e)}
                 onControlTypeSelected={(controlType) => onControlTypeSelected(controlType, control)}
+                onMoveControl={(droppedControl, destControl) => onMoveControl(droppedControl, destControl)}
         />
     })
 

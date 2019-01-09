@@ -116,14 +116,15 @@ function renderControlContent(type, label) {
 
 // For Dropping from the toolbox or Moving control to a different position
 const controlDropTarget = {
-    drop(control, monitor) {
+    drop(destControl, monitor) {
         debugger
         let dropObj = monitor.getItem();
         if (dropObj.dndActionType === constants.DND_ACTION_SET_CONTROL_TYPE) {
-            control.onControlTypeSelected(dropObj.controlType);
+            destControl.onControlTypeSelected(dropObj.arg);
         }
         else if (dropObj.dndActionType === constants.DND_ACTION_MOVE_CONTROL) {
-            control.onMoveControl(dropObj.control);
+            let droppedControl = dropObj.arg;
+            destControl.onMoveControl(droppedControl, destControl);
         }
         
     }
@@ -140,8 +141,10 @@ function collect(connect, monitor) {
 // For Moving controls to a different position
 const itemSource = {
     beginDrag(props) {
-         //debugger
-         return props
+         return {
+            'arg': props,
+            'dndActionType': constants.DND_ACTION_MOVE_CONTROL
+       }
     }
 }
 
