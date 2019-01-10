@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import '../styles/noobControl.css';
 import { DropTarget, DragSource } from 'react-dnd';
-import * as textboxhelper from '../helpers/controlhelpers/textboxHelper';
-import * as comboboxHelper from '../helpers/controlhelpers/comboboxHelper';
 import * as constants from '../constants';
+import NoobControlContent from './noobControlContent'
 
 const ROW_HEIGHT = 65;
 const CONTROL_PADDING = 20;
@@ -24,7 +23,6 @@ const NoobControl = ({type,
                     x,
                     y,
                     connectDropTarget, // comes from the collect() function
-                    connectDragSource,
                     connectDragPreview,
                     hovered // potenttial drop target of selecting a control type
                 }) => {
@@ -62,14 +60,14 @@ const NoobControl = ({type,
 
     let domCtrlId = "ctrl"+controlId;
 
-    return connectDragSource(
-    connectDropTarget(
+    return connectDropTarget(
     <div className={ctrlClass} style={ctrlStyle} onClick={onSelectControl} {...layoutPos}
         id={domCtrlId} >
-        <div className="myContent" id={"ctrlContent" + controlId}>
-            {/* ({controlId} / {type}) {label} */}
-            {renderControlContent(type, label)}
-        </div>
+        <NoobControlContent 
+            controlId={controlId} 
+            type={type}
+            label={label}
+        />
 
         <div className="resizer" id={"ctrlResizer" + controlId}
             onMouseDown={(e) => {                
@@ -81,7 +79,7 @@ const NoobControl = ({type,
         <div className="landingPadContainer" style={landingPadStyle}>
             {createLandingPads(rowSpan, colSpan, domCtrlId, x, y)}
         </div>
-    </div>));
+    </div>);
 }
 
 // Create a landing pad to allow the user to reduce the size of the control
@@ -101,17 +99,6 @@ function createLandingPads(rowSpan, colSpan, domParentCtrlId, parentX, parentY) 
     }
 
     return retList;
-}
-
-function renderControlContent(type, label) {
-    switch(type) {
-        case 'textbox':
-            return textboxhelper.renderTextbox(label);
-        case 'combo':
-            return comboboxHelper.renderCombobox(label);
-        default:
-            return '';
-    }
 }
 
 // For Dropping from the toolbox or Moving control to a different position
@@ -138,24 +125,8 @@ function collect(connect, monitor) {
     }
 }
 
-// For Moving controls to a different position
-const itemSource = {
-    beginDrag(props) {
-         return {
-            'arg': props,
-            'dndActionType': constants.DND_ACTION_MOVE_CONTROL
-       }
-    }
-}
 
-function collectDragSrc(connect, monitor) {
-    return {
-        connectDragSource: connect.dragSource(),
-        connectDragPreview: connect.dragPreview(),
-        //isDragging: monitor.isDragging()
-    }
-}
-
-var dropTarget = DropTarget('control', controlDropTarget, collect)(NoobControl);
-export default DragSource('control', itemSource, collectDragSrc)(dropTarget);
+// var dropTarget = DropTarget('control', controlDropTarget, collect)(NoobControl);
+// export default DragSource('control', itemSource, collectDragSrc)(dropTarget);
 //export default NoobControl;
+export default DropTarget('control', controlDropTarget, collect)(NoobControl);
