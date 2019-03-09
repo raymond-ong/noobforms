@@ -14,13 +14,14 @@ export function renderTextbox(label) {
     var style={
         'marginRight': '5px',
         'marginTop': '0px',
+        'marginBottom': '5px',
         'padding': '0px',
     }; 
     return <div className="textboxContainer">        
         <div className="controlLabel">{label}:            
         </div>
             <Input 
-                size='mini' 
+                size='tiny' 
                 fluid
                 style={style}
                 placeholder={label}>
@@ -29,7 +30,6 @@ export function renderTextbox(label) {
 }
 
 function onChangeHandler(e, data) {
-    debugger
     // this will not work. Changing the state requires calling setState() or firing Redux actions
     this[e.target.name] = e.target.value;    
 }

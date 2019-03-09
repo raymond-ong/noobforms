@@ -50,7 +50,6 @@ function checkLandingPadOverlap(resizingControlId, rectContainer, rectResizing, 
     
     let landingPadsDom = findLandingPadsByParentControl(resizingControlId);
     //console.log('[DEBUG] checkLandingPadOverlap...' + landingPadsDom.length);
-    //debugger
     // check if resizing rect covers me
     landingPadsDom.forEach(landingPad => {
         let rectLandingPad = landingPad.getClientRects()[0];
@@ -87,9 +86,7 @@ function checkOverlaps(resizingControlId, rectResizing, controlIds) {
         else if (domControl.container.classList.contains('potentialResizeDrop')) {
 
             domControl.container.classList.remove('potentialResizeDrop');
-        }
-        
-        //debugger
+        }        
     } );
 }
 
@@ -132,7 +129,6 @@ function sectionMouseUpHandler(resizingControlId, controlIds) {
 function removeAllLandingPadPotentialDrops() {
     let landingPadPotDrops = document.getElementsByClassName('landingPadPotentialDrop');
     if (landingPadPotDrops.length > 0) {
-        //debugger
         // console.log('[DEBUG] removeAllLandingPadPotentialDrops' + landingPadPotDrops.length);
     }
 

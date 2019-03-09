@@ -10,7 +10,60 @@ import {getToolItem} from '../../components/toolbox';
 
 const DEFAULT_LABEL = 'Combobox';
 
+const friendOptions = [
+  {
+    text: 'Jenny Hess',
+    value: 'Jenny Hess',
+  },
+  {
+    text: 'Apple',
+    value: 'Apple',
+  },
+  {
+    text: 'Banana',
+    value: 'Banana',
+  },
+  {
+    text: 'Carrots',
+    value: 'Carrots',
+  },
+  {
+    text: 'Dwight "The Superman" Howard',
+    value: 'Dwight',
+  },
+]
+
+// Using semantic ui dropdown:
+// Prob: Font size too big
 export function renderCombobox(label) {
+    if (!label) {
+        label = DEFAULT_LABEL;
+    }
+
+    var style={
+        'marginRight': '5px',
+        'marginTop': '0px',
+        'marginBottom': '5px',
+        'width': 'calc(100% - 5px)'
+    };
+
+    return (<div className="comboboxContainer">        
+        <label className="controlLabel">{label}:            
+        </label>
+        <Dropdown placeholder='Select Friend' 
+                        size='tiny' 
+                        fluid 
+                        multiple
+                        search
+                        selection
+                        style={style}
+                        options={friendOptions} />
+    </div>);
+}
+   
+// Using Rc-select    
+// Prob: Drag image is not shown
+export function renderComboboxRc(label) {
     if (!label) {
         label = DEFAULT_LABEL;
     }

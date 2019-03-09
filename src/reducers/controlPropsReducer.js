@@ -23,10 +23,8 @@ const reducer = (state = initialState, action) => {
     const newState = {...state};
     switch(action.type) {
         case 'APPLY_PROPS':
-            // Do some Validation?
-            // Just ask the desginer to update itself
-            // Or just let the designer to listen to this event
-            //debugger
+            // Assumption is that the data has been validated already
+            
             break;
         case 'SET_CONTROL_NUMTEXT_CHANGE':
             // allow empty string or any valid number

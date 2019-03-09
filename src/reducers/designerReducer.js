@@ -70,12 +70,11 @@ function findControlById(state, inputControlId) {
     let findId = inputControlId; // todo: closure stuff...let-variables are accessible from inner functions
     state.sections.forEach(section => {
         var controls = section.controls;
-        controls.forEach(control => {
-            if (control.controlId === findId) {
-                retObj = control;
-                return; // break
-            }
-        })
+        var foundControl = controls.find(control =>  control.controlId === findId);
+        if (foundControl) {
+            retObj = foundControl;
+            return; // break
+        }
     });
 
     return retObj;
@@ -194,7 +193,6 @@ function nameExists(name, sections) {
 }
 
 function exchangePositions(sections, control1, control2) {
-    debugger
     // TODO: consider exchanging positions between 2 sections
     // Exchange the properties
     let tempX = control2.x;
@@ -218,20 +216,20 @@ const reducer = (state = initialState, action) => {
     const newState = {...state};
     switch(action.type) {
     case 'APPLY_PROPS':
+        debugger
+        // TODO: do validation like duplicate name checking here
+        // state.error = '...' --> there should be a component that renders an error message if the state has errors        
         if (action.selectedType === constants.TYPE_CONTROL) {
-            //debugger
             newState.sections = [...state.sections];
-            let selectedControl  = findControlById(newState, action.controlId);
-            if (selectedControl === null) {
+            let appliedControl = findControlById(newState, newState.selectedControlId);
+            if (appliedControl === null) {
                 break;
             }
-            selectedControl.rowSpan = action.controlRowSpan;
-            selectedControl.colSpan = action.controlColSpan;
-            selectedControl.label = action.controlLabel;
-            selectedControl.name = action.controlName;
-            selectedControl.type = action.controlType;
-
-            // TODO: re-calculate the X and Y positions
+            //let appliedControlIdx = section.controls.indexOf(control1);
+            //appliedControl = {...action.selectedControl};            
+            appliedControl.name = action.selectedControl.name;
+            appliedControl.label = action.selectedControl.label;
+            // TODO: re-calculate the X and Y positions if necessary
         }
         else {
         }

@@ -43,7 +43,7 @@ const NoobControl = ({type,
         'gridColumnEnd': 'span ' + colSpan,
     };
 
-    //console.log(`[DEBUG][NoobControl][render: ${controlId}][x,y: (${x},${y})]`);
+    console.log(`[DEBUG][NoobControl][render: ${controlId}] label: ${label} [x,y: (${x},${y})]`);
 
     // access these in Javascript by x.dataset.layoutx (Note: lowercase)
     let layoutPos = {
@@ -104,7 +104,6 @@ function createLandingPads(rowSpan, colSpan, domParentCtrlId, parentX, parentY) 
 // For Dropping from the toolbox or Moving control to a different position
 const controlDropTarget = {
     drop(destControl, monitor) {
-        debugger
         let dropObj = monitor.getItem();
         if (dropObj.dndActionType === constants.DND_ACTION_SET_CONTROL_TYPE) {
             destControl.onControlTypeSelected(dropObj.arg);
