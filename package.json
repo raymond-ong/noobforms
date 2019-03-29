@@ -2,7 +2,9 @@
   "name": "noobforms",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://raymond-ong.github.io/noobforms/",
   "dependencies": {
+    "gh-pages": "^2.0.1",
     "rc-select": "^8.6.0",
     "react": "^16.4.2",
     "react-dnd": "^5.0.0",
@@ -19,6 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",    
     "eject": "react-scripts eject"
   },
   "devDependencies": {
